@@ -83,3 +83,4 @@ tools/anaconda
 tools/ice-g2p
 tools/fairseq
 tools/._*
+espnet2/gan_tts/vits/monotonic_align
