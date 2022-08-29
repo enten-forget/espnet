@@ -10,6 +10,7 @@ AISHELL4=downloads
 ALFFA=downloads
 AMERICASNLP22=downloads
 Amadeus=data
+Fate=data
 AN4=downloads
 AUDIOSET=
 DIRHA_ENGLISH_PHDEV=
