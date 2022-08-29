@@ -1293,12 +1293,12 @@ class AbsTask(ABC):
                         name = str(Path(".").resolve()).replace("/", "_")
                     else:
                         name = args.wandb_name
-
+                    # print(f'output_dir is {output_dir},type is {type(output_dir)}')
                     wandb.init(
                         entity=args.wandb_entity,
                         project=project,
                         name=name,
-                        dir=output_dir,
+                        dir=output_dir.as_posix(),
                         id=args.wandb_id,
                         resume=args.resume,
                     )
