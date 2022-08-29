@@ -45,6 +45,7 @@ egs*/*/*/.cache*
 egs*/*/*/pretrained_models*
 egs*/fisher_callhome_spanish/*/local/mapping*
 egs*/*/*/wandb
+egs*/*/*/*.wav
 
 # tools related
 tools/chainer
