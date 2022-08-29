@@ -50,15 +50,15 @@ g2p=pyopenjtalk_accent_with_pause
 # g2p=pyopenjtalk_prosody
 
 ./tts.sh \
-    --ngpu 4 \
+    --ngpu 1 \
     --stage 6 \
     --min_wav_duration 0.38 \
     --dumpdir dump/22k \
     --tts_task gan_tts \
     --feats_extract linear_spectrogram \
     --feats_normalize none \
-    --train_args "--init_param downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/train.total_count.ave_10best.pth:tts:tts" \
-    --tag amadeus_vits_finetune_from_jsut \
+    --train_args "--init_param downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/train.total_count.ave_10best.pth:tts:tts --use_wandb true --wandb_project amadeus" \
+    --tag amadeus_vits_finetune_from_jsut_32_sentence \
     --lang jp \
     --local_data_opts "${wav_filelist}" \
     --feats_type raw \

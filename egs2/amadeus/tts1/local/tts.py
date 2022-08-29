@@ -4,7 +4,7 @@ import torch
 import time
 
 # Load the model
-origin = True
+origin = False
 if origin:
     text2speech = Text2Speech(
         train_config="downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/config.yaml",
@@ -13,21 +13,27 @@ if origin:
     )
 else:
     text2speech = Text2Speech(
-        train_config="exp/tts_amadeus_vits_finetune_from_jsut/config.yaml",
-        model_file="exp/tts_amadeus_vits_finetune_from_jsut/latest.pth",
+        train_config="exp/tts_amadeus_vits_finetune_from_jsut_32_sentence/config.yaml",
+        model_file="exp/tts_amadeus_vits_finetune_from_jsut_32_sentence/train.total_count.ave.pth",
         device='cuda'
     )
+filepath = '/gds/jcao/code/espnet/egs2/amadeus/tts1/local/texts/text1.txt'
+with open(filepath, 'r') as f:
+    texts = f.readlines()
+type='read'
 
-texts = [
-    '画面の前の皆さんこんにちは', 
-    'まきせくりすです...どうぞよろしく',
-    'ご覧のとおり、現在の人工知能技術を使用して音声システムを合成しているだけです',
-    '技術的およびデータセットの制限により、現在成熟していません',
-    '今は対話機能がありません',
-    '対話システムは、よりインテリジェントになることを期待して、フォローアップで導入されます',
-    '今回はここまで、また次回',
-    'さようならみんな'
-]
+# texts = [
+#     '画面の前の皆さんこんにちは', 
+#     'まきせくりすです...どうぞよろしく',
+#     'ご覧のとおり、現在の人工知能技術を使用して音声システムを合成しているだけです',
+#     '技術的およびデータセットの制限により、現在成熟していません',
+#     '今は対話機能がありません',
+#     '対話システムは、よりインテリジェントになることを期待して、フォローアップで導入されます',
+#     '今回はここまで、また次回',
+#     'さようならみんな'
+# ]
+# type='introduction'
+
 wavs = None
 
 # synthesis
@@ -42,10 +48,11 @@ with torch.no_grad():
             wavs = torch.cat((wavs, wav))
         silence = torch.zeros(int(text2speech.fs*0.1)).to(wavs.device)
         wavs = torch.cat((wavs, silence))
-print(f"synthesis time: {time.time()-start}")
+print(f"synthesis time: {time.time()-start}s")
+print(f'wav time: {wavs.shape[0]/text2speech.fs}s')
 # save
 import soundfile as sf
 if origin:
-    sf.write('jsut.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")
+    sf.write(f'jsut_{type}.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")
 else:
-    sf.write('amadeus.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")
+    sf.write(f'amadeus_{type}.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")
