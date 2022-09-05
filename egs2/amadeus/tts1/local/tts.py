@@ -15,7 +15,8 @@ else:
     text2speech = Text2Speech(
         train_config="exp/tts_amadeus_vits_finetune_from_jsut_32_sentence/config.yaml",
         model_file="exp/tts_amadeus_vits_finetune_from_jsut_32_sentence/train.total_count.ave.pth",
-        device='cuda'
+        device='cuda',
+        speed_control_alpha=1.0,
     )
 filepath = '/gds/jcao/code/espnet/egs2/amadeus/tts1/local/texts/text1.txt'
 with open(filepath, 'r') as f:
@@ -30,9 +31,12 @@ type='read'
 #     '今は対話機能がありません',
 #     '対話システムは、よりインテリジェントになることを期待して、フォローアップで導入されます',
 #     '今回はここまで、また次回',
+#     # '忘れないで，あなたはどの世界線にいてもひとりじゃない，私がいる',
 #     'さようならみんな'
 # ]
 # type='introduction'
+
+
 
 wavs = None
 
