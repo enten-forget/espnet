@@ -25,11 +25,11 @@ fi
 . ./cmd.sh || exit 1;
 . ./db.sh || exit 1;
 
-if [ -z "${Amadeus}" ]; then
-   log "Fill the value of 'Amadeus' of db.sh"
+if [ -z "${Fate}" ]; then
+   log "Fill the value of 'Fate' of db.sh"
    exit 1
 fi
-db_root=${Amadeus}
+db_root=${Fate}
 
 train_set=train
 train_dev=dev

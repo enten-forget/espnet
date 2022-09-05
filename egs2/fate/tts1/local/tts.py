@@ -4,35 +4,16 @@ import torch
 import time
 
 # Load the model
-origin = False
-if origin:
-    text2speech = Text2Speech(
-        train_config="downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/config.yaml",
-        model_file="downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/train.total_count.ave_10best.pth",
-        device='cuda'
-    )
-else:
-    text2speech = Text2Speech(
-        train_config="exp/tts_amadeus_vits_finetune_from_jsut_32_sentence/config.yaml",
-        model_file="exp/tts_amadeus_vits_finetune_from_jsut_32_sentence/train.total_count.ave.pth",
-        device='cuda'
-    )
-filepath = '/gds/jcao/code/espnet/egs2/amadeus/tts1/local/texts/text1.txt'
-with open(filepath, 'r') as f:
-    texts = f.readlines()
-type='read'
 
-# texts = [
-#     '画面の前の皆さんこんにちは', 
-#     'まきせくりすです...どうぞよろしく',
-#     'ご覧のとおり、現在の人工知能技術を使用して音声システムを合成しているだけです',
-#     '技術的およびデータセットの制限により、現在成熟していません',
-#     '今は対話機能がありません',
-#     '対話システムは、よりインテリジェントになることを期待して、フォローアップで導入されます',
-#     '今回はここまで、また次回',
-#     'さようならみんな'
-# ]
-# type='introduction'
+text2speech = Text2Speech(
+    train_config="exp/22k/tts_train_vits_raw_phn_jaconv_pyopenjtalk_use_wandbtrue_wandb_projectfate_wandb_namevits_train_saber_use_tensorboardFalse/config.yaml",
+    model_file="exp/22k/tts_train_vits_raw_phn_jaconv_pyopenjtalk_use_wandbtrue_wandb_projectfate_wandb_namevits_train_saber_use_tensorboardFalse/latest.pth",
+    device='cuda'
+)
+
+texts = [
+   '問おう。あなたがわたしのマスターか？'
+]
 
 wavs = None
 
@@ -52,7 +33,4 @@ print(f"synthesis time: {time.time()-start}s")
 print(f'wav time: {wavs.shape[0]/text2speech.fs}s')
 # save
 import soundfile as sf
-if origin:
-    sf.write(f'jsut_{type}.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")
-else:
-    sf.write(f'amadeus_{type}.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")
+sf.write(f'saber.wav',wavs.cpu().numpy(), text2speech.fs,"PCM_16")

@@ -17,15 +17,12 @@ if [ "${fs}" -eq 22050 ]; then
 else
     opts="--audio_format flac "
 fi
-
-wav_filelist=/gds/jcao/code/Amadeus/data/Amadeus/CRS.txt
 train_set=train
 valid_set=dev
 test_sets=test
 
 train_config=conf/tuning/finetune_vits.yaml
-inference_config=conf/decode.yaml
-
+inference_config=conf/tuning/decode_vits.yaml
 
 # Input example: こ、こんにちは
 
@@ -50,22 +47,24 @@ g2p=pyopenjtalk_accent_with_pause
 # g2p=pyopenjtalk_prosody
 
 ./tts.sh \
-    --ngpu 1 \
     --stage 6 \
+    --skip_upload_hf false \
+    --skip_eval true \
     --min_wav_duration 0.38 \
-    --dumpdir dump/22k \
-    --tts_task gan_tts \
-    --feats_extract linear_spectrogram \
-    --feats_normalize none \
-    --train_args "--init_param downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/train.total_count.ave_10best.pth:tts:tts --use_wandb true --wandb_project amadeus --wandb_name vits_finetune_amadeus_from_jsut --use_tensorboard false" \
-    --tag amadeus_vits_finetune_from_jsut_32_sentence \
+    --ngpu 4 \
     --lang jp \
-    --local_data_opts "${wav_filelist}" \
     --feats_type raw \
     --fs "${fs}" \
     --n_fft "${n_fft}" \
     --n_shift "${n_shift}" \
     --win_length "${win_length}" \
+    --dumpdir dump/22k \
+    --expdir exp/22k \
+    --tts_task gan_tts \
+    --feats_extract linear_spectrogram \
+    --feats_normalize none \
+    --train_args "--init_param downloads/f3698edf589206588f58f5ec837fa516/exp/tts_train_vits_raw_phn_jaconv_pyopenjtalk_accent_with_pause/train.total_count.ave_10best.pth:tts:tts --use_wandb true --wandb_project fate --wandb_name vits_train_saber  --use_tensorboard False" \
+    --tag fate_saber_vits_finetune_from_jsut \
     --token_type phn \
     --cleaner jaconv \
     --g2p "${g2p}" \
@@ -76,4 +75,5 @@ g2p=pyopenjtalk_accent_with_pause
     --valid_set "${valid_set}" \
     --test_sets "${test_sets}" \
     --srctexts "data/${train_set}/text" \
-    ${opts} "$@"
+    ${opts} "$@" \
+    --local_data_opts "/gds/jcao/data/Fate/Fate/transcript_FATE_all.txt"\
