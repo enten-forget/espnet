@@ -1,1 +1,1 @@
-export hf_repo=mio/fate-saber
+export hf_repo=mio/Artoria
